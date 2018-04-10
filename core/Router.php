@@ -14,8 +14,9 @@ class Router
     {
         $path = preg_replace("/\\//", "\/", $path);
         $path = preg_replace("/\\^/", "/^\/", $path);
-        $path = preg_replace("/\\$/", "\/\S+=\S+$/", $path);
+        $path = preg_replace("/\\$/", "\/(\S+=\S+$)*/", $path);
         $this->paths[$path] = $func;
+       // echo $path."<br>";
     }
 
     function run()
