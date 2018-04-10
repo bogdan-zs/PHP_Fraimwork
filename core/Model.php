@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bogdan
- * Date: 07.04.18
- * Time: 22:23
- */
 
 include_once "Database/SQLBuilder.php";
 

@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bogdan
- * Date: 07.04.18
- * Time: 19:03
- */
+
 
 include_once "Singleton.php";
 class Database

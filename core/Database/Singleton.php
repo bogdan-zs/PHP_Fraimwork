@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bogdan
- * Date: 07.04.18
- * Time: 16:01
- */
+
 
 trait Singleton
 {

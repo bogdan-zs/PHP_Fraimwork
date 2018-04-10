@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: bogdan
- * Date: 10.04.18
- * Time: 12:48
- */
+
 
 class Router
 {
