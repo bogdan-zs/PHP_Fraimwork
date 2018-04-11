@@ -43,13 +43,13 @@ class Model
 
     function __set($name, $value)
     {
-        $this->attributes[$name] = $value;
+        if($this->attributes[$name]??null)
+            $this->attributes[$name] = $value;
     }
 
     function get($count = null)
     {
-        if(!$this)
-            return (new self())->get($count);
+
         $recs = $this->builder->get($count);
         $models = [];
         foreach ($recs as $rec)
