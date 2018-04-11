@@ -11,9 +11,9 @@ class Model
     private $attributes = [];
     private $builder;
 
-    function __construct($attributes = null, $new = false, $autoinc = true)
+    function __construct($attributes = null, $new = false, $auto_inc = true)
     {
-        $this->isAutoinc = $autoinc;
+        $this->isAutoinc = $auto_inc;
         if (!$this->tabel) $this->tabel = strtolower(get_class($this));
         $this->attributes = $attributes;
         $this->builder = SQLBuilder::table($this->tabel);
@@ -43,6 +43,7 @@ class Model
 
     function __set($name, $value)
     {
+
         if($this->attributes[$name]??null)
             $this->attributes[$name] = $value;
     }
@@ -55,6 +56,11 @@ class Model
         foreach ($recs as $rec)
             $models[] = new static($rec,false,false);
         return $models;
+    }
+
+    static function all()
+    {
+        return (new static())->get();
     }
 
     function save()
