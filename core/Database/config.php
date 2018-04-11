@@ -9,5 +9,5 @@ $config =[
     "host"=>"localhost:3306",
     "dbname"=>"store",
     "user"=>"root",
-    "password"=>"pass"
+    "password"=>"23en43"
 ];
