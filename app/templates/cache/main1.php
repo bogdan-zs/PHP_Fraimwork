@@ -1,0 +1,3 @@
+<?php if(true):?>
+    <?=42?>
+<?php endif ;?>

@@ -3,7 +3,7 @@
 
 class Router
 {
-    private $paths = [];
+    private $paths;
 
     function __construct()
     {
@@ -13,24 +13,22 @@ class Router
     function add_rout($path, $func)
     {
         $path = preg_replace("/\\//", "\/", $path);
-        $path = preg_replace("/\\^/", "/^\/", $path);
-        $path = preg_replace("/\\$/", "\/(\S+=\S+$)*/", $path);
-        $this->paths[$path] = $func;
-       // echo $path."<br>";
+        $path = preg_replace("/\\^/", "/^\/", $path); //begin of string
+        $path = preg_replace("/\\$/", "\/(\?\S+?=\S+?)*?$/", $path); // end string + query string
+        $this->paths[$path] = preg_split("/\@/", $func); // [class,func,args]
     }
 
     function run()
     {
         $path_from_user = $_SERVER["REQUEST_URI"];
-        foreach ($this->paths as $path => $func) {
+        foreach ($this->paths as $path => $view) {
             $arguments = [];
             $values = [];
             if (preg_match($path, $path_from_user, $arguments)) {
-                $class_func_args = preg_split("/\@/", $func);// [class,func,args]
-                if ($class_func_args[2]??null)
-                    $values = $this->value_args($class_func_args[2], $arguments);
-                $req = call_user_func_array(array($class_func_args[0], $class_func_args[1]),
-                    $values);
+                if ($view[2]??false)
+                    $values = $this->value_args($view[2], $arguments);
+
+                $req = call_user_func_array(array($view[0], $view[1]), $values);
 
                 echo $req;
             }
@@ -50,3 +48,5 @@ class Router
 }
 
 $Router = new Router();
+require_once "config.php";
+require_once "$app_name/routes.php";

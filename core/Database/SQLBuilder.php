@@ -15,6 +15,7 @@ class SQLBuilder
     private function __construct()
     {
         self::$DBH = Database::connect();
+
     }
 
     static function table($table)
@@ -25,13 +26,11 @@ class SQLBuilder
 
     static private function make_arr_for_plc($where_arr)
     {
-        print_r($where_arr);
-        echo "<br>";
         $result = [];
         self::$where = array();
         foreach ($where_arr as $el) {
-            $result[] = "$el[0]$el[1]:$el[0]";
-            self::$where[$el[0]] = $el[2];
+            $result[] = "$el[0]$el[1]:$el[0]$el[2]";
+            self::$where[$el[0].$el[2]] = $el[2];
         }
 
         return $result;
@@ -48,7 +47,7 @@ class SQLBuilder
     {
         self::$where = [];
         foreach ($conditions as $condition) {
-            self::$where[] = preg_split("/(\>\=|\<\=|\=|\>|\<)/",
+            self::$where[] = preg_split("/(\>\=|\<\=|\=|\>|\<)/",//"id=5=6"
                 $condition, -1, PREG_SPLIT_DELIM_CAPTURE);
         }
 
@@ -66,7 +65,7 @@ class SQLBuilder
         $table = self::$table;
         $columns = join(",", array_keys($atr));
         $values = ":" . join(",:", array_keys($atr));
-        $query = "INSERT INTO $table ($columns) VALUE ($values)";
+        $query = "INSERT INTO $table ($columns) VALUE ($values)"; //insert into table(name,id) values(:name,)
         $status = self::$DBH->prepare($query)->execute($atr);
 
 
@@ -131,7 +130,7 @@ class SQLBuilder
 
         $prepare_query = self::$DBH->prepare($query);
         $prepare_query->execute(self::$where);
-
+        //var_dump($query);
         self::clear_arr();
 
         return $prepare_query->fetchAll(PDO::FETCH_ASSOC);

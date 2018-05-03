@@ -44,6 +44,7 @@ class Model
     function __set($name, $value)
     {
 
+        var_dump($this->isNew);
         if($this->attributes[$name]??null)
             $this->attributes[$name] = $value;
     }
@@ -54,6 +55,7 @@ class Model
         $recs = $this->builder->get($count);
         $models = [];
         foreach ($recs as $rec)
+            //get_class($this);
             $models[] = new static($rec,false,false);
         return $models;
     }
@@ -81,8 +83,10 @@ class Model
             return $this->builder->where("$this->id_name=$id_value")
                                  ->update($this->attributes);
         }
-        else
+        else {
+            $this->isNew = false;
             return $this->builder->insert($this->attributes);
+        }
     }
 
 }
