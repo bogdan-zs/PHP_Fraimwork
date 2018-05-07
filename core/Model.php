@@ -4,8 +4,8 @@ include_once "Database/SQLBuilder.php";
 
 class Model
 {
-    private $tabel = null;
-    private $id_name = "id";
+    protected $tabel = null;
+    protected $id_name = "id";
     private $isAutoinc;
     private $isNew;
     private $attributes = [];
@@ -38,13 +38,15 @@ class Model
 
     function __get($name)
     {
+        if($name=="id")
+            $name = $this->id_name;
         return $this->attributes[$name] ?? null;
+
     }
 
     function __set($name, $value)
     {
 
-        var_dump($this->isNew);
         if($this->attributes[$name]??null)
             $this->attributes[$name] = $value;
     }

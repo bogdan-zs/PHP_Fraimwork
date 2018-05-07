@@ -10,18 +10,21 @@
 function render($template, $context = [])
 {
     require "config.php";
-    $exp_of_script = 10;
+    $exp_of_script = 3;
     $template = $template . ".php";
-    $files = scandir($cache_path);
-    $template_time = fileatime($templates_path . $template);
-    $cache_time = fileatime($cache_path . $template);
+    $files = scandir($CACHES_PATH);
+//    echo fileatime($TEMPLATES_NAME . $template) - fileatime($CACHES_PATH . $template);
+//    echo (in_array("$template", $files)) ? 'true' : 'false';
 
-    if (!in_array("$template", $files) || ($template_time - $cache_time) > $exp_of_script)
+    if (!in_array("$template", $files) ||
+        (fileatime($TEMPLATES_NAME . $template) - fileatime($CACHES_PATH . $template)) > $exp_of_script) {
+        echo "parse";
         parser($template);
+    }
 
     extract($context, EXTR_SKIP);
     ob_start();
-    require "$app_name/templates/cache/$template";
+    require "$APP_NAME/templates/cache/$template";
 
     return ob_get_clean();
 }
@@ -29,27 +32,36 @@ function render($template, $context = [])
 
 function parser($template)
 {
-    echo "parser";
+    //echo "parser";
     require "config.php";
-    $file_path = "$app_name/templates/$template";
+    $file_path = "$APP_NAME/templates/$template";
 
     $special_symbols = [
         "{!" => "<?=",
         "!}" => "?>",
         "{{" => "<?=htmlentities(",
         "}}" => ")?>",
-        "{%" => "<?php",
+        "{%" => "<?php  ",
         ":%}" => ":?>",
         "%}" => ";?>"
     ];
 
     $str = file_get_contents($file_path);
-
+    $str = csrf($str);
 
     foreach ($special_symbols as $symbol => $php_symbol)
         $str = str_replace($symbol, $php_symbol, $str);
-    file_put_contents("$app_name/templates/cache/$template", $str);
+    file_put_contents("$APP_NAME/templates/cache/$template", $str);
     return $str;
+}
+
+function csrf($text)
+{
+    require "config.php";
+    $csrf_token = hash("sha256", $SECRET_KEY);
+    $csrf_input = "<input type='hidden' name='csrftoken' value='$csrf_token' />";
+    $text = str_replace("{%csrf%}", $csrf_input, $text);
+    return $text;
 }
 
 //function parser_func($text)

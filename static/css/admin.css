@@ -1,0 +1,20 @@
+body {
+    background-color: aliceblue;
+}
+
+div.form {
+    margin: 100px 0
+}
+
+.tab-content h3 {
+    background-color: #417690;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+}
+
+.enter {
+    border-color: #417690;
+    background-color: #417690;
+    color: white;
+}

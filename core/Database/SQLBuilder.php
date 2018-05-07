@@ -30,7 +30,7 @@ class SQLBuilder
         self::$where = array();
         foreach ($where_arr as $el) {
             $result[] = "$el[0]$el[1]:$el[0]$el[2]";
-            self::$where[$el[0].$el[2]] = $el[2];
+            self::$where[$el[0] . $el[2]] = $el[2];
         }
 
         return $result;
@@ -38,8 +38,8 @@ class SQLBuilder
 
     static function select(...$columns)
     {
-
-        self::$select = $columns;
+        if (!$columns)
+            self::$select = array_merge($columns, self::$select);
         return self::getInstance();
     }
 
@@ -47,7 +47,7 @@ class SQLBuilder
     {
         self::$where = [];
         foreach ($conditions as $condition) {
-            self::$where[] = preg_split("/(\>\=|\<\=|\=|\>|\<)/",//"id=5=6"
+            self::$where[] = preg_split("/(\>\=|\<\=|\=|\>|\<)/",
                 $condition, -1, PREG_SPLIT_DELIM_CAPTURE);
         }
 
@@ -67,7 +67,6 @@ class SQLBuilder
         $values = ":" . join(",:", array_keys($atr));
         $query = "INSERT INTO $table ($columns) VALUE ($values)"; //insert into table(name,id) values(:name,)
         $status = self::$DBH->prepare($query)->execute($atr);
-
 
         self::clear_arr();
         return $status;
@@ -142,5 +141,22 @@ class SQLBuilder
         self::$select = ["*"];
         self::$where = [];
         self::$orderBy = [];
+    }
+
+    public static function get_columns_name($table)
+    {
+        $q = self::$DBH->prepare("DESCRIBE $table");
+        $q->execute();
+        $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
+        return $table_fields;
+    }
+
+    public static function get_columns_type($table)
+    {
+        self::$DBH = Database::connect();
+        $q = self::$DBH->prepare("DESCRIBE $table");
+        $q->execute();
+        $table_types = $q->fetchAll(PDO::FETCH_COLUMN,1);
+        return $table_types;
     }
 }

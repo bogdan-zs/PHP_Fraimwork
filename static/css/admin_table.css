@@ -1,0 +1,42 @@
+.header {
+    background-color: #417690;
+    color: white;
+}
+
+.header h1 {
+    padding: 15px;
+}
+
+table tbody .button {
+    margin: 0 10px;
+}
+
+.commands {
+    text-align: right;
+}
+
+.main {
+    padding: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.edit input
+{
+    margin: 15px 0;
+}
+
+.edit label
+{
+    font-weight: bold;
+    font-size: 20px;
+    margin: 15px 0;
+}

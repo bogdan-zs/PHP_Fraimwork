@@ -10,7 +10,7 @@ class Database
     static function connect()
     {
         require "config.php";
-        extract($config);
+        extract($CONFIG);
 
         $DBH = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
         return $DBH;
