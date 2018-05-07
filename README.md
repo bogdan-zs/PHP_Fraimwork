@@ -2,7 +2,7 @@
 
 ## Install
 add file ```config.php```
-config.php
+
 ```
 <?php
 $CONFIG = [
