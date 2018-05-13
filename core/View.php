@@ -17,7 +17,7 @@ function render($template, $context = [])
 //    echo (in_array("$template", $files)) ? 'true' : 'false';
 
     if (!in_array("$template", $files) ||
-        (fileatime($TEMPLATES_NAME . $template) - fileatime($CACHES_PATH . $template)) > $exp_of_script) {
+        fileatime($TEMPLATES_NAME . $template) > fileatime($CACHES_PATH . $template)) {
         echo "parse";
         parser($template);
     }
