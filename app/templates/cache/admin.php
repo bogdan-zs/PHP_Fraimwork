@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="/PHP_Fraimwork/static/css/admin.css">
     <meta charset="utf-8">
-    <title>Вхід в адміністративну частину сайта</title>
+    <title>Admin control panel</title>
 </head>
 <body>
 
@@ -36,10 +36,3 @@
 </html>
 
 
-<?php
-/**
- * Created by PhpStorm.
- * User: bogdan
- * Date: 05.05.18
- * Time: 18:37
- */

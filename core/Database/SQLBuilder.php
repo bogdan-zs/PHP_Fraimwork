@@ -67,7 +67,7 @@ class SQLBuilder
         $values = ":" . join(",:", array_keys($atr));
         $query = "INSERT INTO $table ($columns) VALUE ($values)"; //insert into table(name,id) values(:name,)
         $status = self::$DBH->prepare($query)->execute($atr);
-
+        var_dump($query);
         self::clear_arr();
         return $status;
     }

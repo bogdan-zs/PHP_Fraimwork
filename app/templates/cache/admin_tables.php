@@ -8,12 +8,22 @@
 </head>
 <body>
 
-<div class="header"><h1><a href="/PHP_Fraimwork/admin/">Admin control panel</a></h1></div>
+<div class="header row">
+    <h1 class="col-sm-6 col-md-9 col-lg-9" style="margin: 0"><a href="/PHP_Fraimwork/admin/" style="margin: 0 10px; line-height: 70px;">7777Admin control panel</a></h1>
+    <div class="col-sm-6 col-md-3 col-lg-3" style="display: inline-block; text-align: center;">
+        <a href="?q=exit"><button class="exit btn btn-secondary" style="margin: 30px 0; padding: 5px 20px;
+    background-color: #75ADC8;">
+           Exit
+        </button></a>
+    </div>
+</div>
 
 <div class="container">
+
     <div class="row">
-<!--        <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 main">-->
-            <div class="main col">
+        <!--        <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 main">-->
+        <div class="main col">
+            <a href="exit/">exit</a>
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -26,7 +36,9 @@
                 <tr>
                     <td onclick="window.location.href='<?=htmlentities($table)?>/'; return false"><h3><?=htmlentities($table)?></h3></td>
                     <td class="commands">
-                        <a href="<?=htmlentities($table)?>/add/"> <button type="button" class="btn btn-success">Add</button></a>
+                        <a href="<?=htmlentities($table)?>/add/">
+                            <button type="button" class="btn btn-success">Add</button>
+                        </a>
                     </td>
                 </tr>
                 <?php  endforeach;?>

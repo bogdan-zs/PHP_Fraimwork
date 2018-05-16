@@ -13,7 +13,7 @@ class CrsfMiddleware implements Middleware
         require_once "config.php";
         $csrf_token = hash("sha256", $SECRET_KEY);
         if ($_SERVER["REQUEST_METHOD"]=="POST")
-            return $_POST["csrftoken"] ?? null == $csrf_token;
+            return ($_POST["csrftoken"] ?? null) == $csrf_token;
         else
             return true;
     }

@@ -7,6 +7,6 @@
  */
 interface Middleware
 {
-    function handle(); // run before all response
+    function handle(); // run before all requests
     function error(); // run if handle() return false
 }

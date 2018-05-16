@@ -1,55 +1,69 @@
 <?php
 
 include_once "Admin.php";
+
 class Router
 {
-    private $paths;
+    public $paths;
 
     function __construct()
     {
         $this->paths = [];
     }
 
-    function add_rout($path, $func, $middleware = null)
+    function add_rout($path, $func, $middleware = null, $methods = ["GET", "POST"])
     {
-        $path = preg_replace("/\\//", "\/", $path);
-        $path = preg_replace("/\\^/", "/^\/", $path); //begin of string
-//        $path = preg_replace("/\\$/", "$/", $path); //end string
+        if (preg_match("/\\$/", $path))
+        $preg_path = preg_replace("/\\$/","/(\?\S+?=\S*?)*?$","~$path~" );
+        else
+            $preg_path = "~$path/(\?\S+?=\S*?)*?~";
+//        $path = preg_replace("/\\//", "\/", $path);
+//        $path = preg_replace("/\\^/", "/^\/", $path); //begin of string
+//        $preg_path = preg_replace("/\\$/", "\/(\?\S+?=\S*?)*?$/", $path); // end string + query string
 
-        //$path = $path."\/(\?\S+?=\S+?)*?$/";
-        $path = preg_replace("/\\$/", "\/(\?\S+?=\S+?)*?$/", $path); //end and query string
 
-        if(!preg_match("/\\$/", $path)) // if dont have and of string
-            $path = $path."\S*?\/(\?\S+?=\S+?)*?$/";
+//        $path = preg_replace("/\\//", "\/", $path);
+//        $path = preg_replace("/\\^/", "/^\/", $path); //begin of string
+////        $path = preg_replace("/\\$/", "$/", $path); //end string
+//
+//        //$path = $path."\/(\?\S+?=\S+?)*?$/";
+//
+//
+//        if (!preg_match("/\\$/", $path)) // if dont have and of string
+//            $path = $path . "\S*\/(\?\S+=\S+)*/";
+//        else
+//            $path = preg_replace("/\\$/", "\\/(\\?\S+=\S+)*/", $path); //end and query string
 
-        $this->paths[$path] = preg_split("/\@/", $func); // [class,func,args]
-        $this->paths[$path]["middleware"] = $middleware;
+        $this->paths[$preg_path] = preg_split("/\@/", $func); // [class,func,args]
+        $this->paths[$preg_path]["middleware"] = $middleware;
 
-        $args = $this->paths[$path][2] ?? null;
+        $args = $this->paths[$preg_path][2] ?? null;
         if ($args) {
             $args = preg_replace("/(\\(|\\))/", "", $args);
-            $this->paths[$path][2] = preg_split("/,/", $args);
+            $this->paths[$preg_path][2] = preg_split("/,/", $args);
         }
-        //echo $path;
-
+//        echo "<pre>";
+//        var_dump($this->paths);
+//        echo "</pre>";
 
     }
 
     function run()
     {
         $path_from_user = $_SERVER["REQUEST_URI"];
+        $middlewares = [];
+
         foreach ($this->paths as $path => $view) {
             $values_from_uri = [];
             $params_view_func = [];
             if (preg_match($path, $path_from_user, $values_from_uri)) {
-
-                $name_of_middlewares = array_merge([$view["middleware"]],$view[0]::$middleware);
-                foreach ($name_of_middlewares as $middleware)
-                    if($middleware)
+                $name_of_middlewares = array_merge([$view["middleware"]], $view[0]::$middleware);
+                foreach ($name_of_middlewares as $middleware) {
+                    if ($middleware)
                         $middlewares[] = new $middleware();
+                }
 
                 $result = $this->middleware_run($middlewares);
-
                 if ($result) {
                     if ($view[2] ?? false)
                         $params_view_func = $this->param_arr($view[2], $values_from_uri);
@@ -63,19 +77,22 @@ class Router
                 break;
             }
         }
+//        http_response_code(404);
+//        include("404.php");
+//        exit();
     }
+
     function middleware_run($middlewares)
     {
 
 
-        foreach ($middlewares as $middleware) {
+        foreach ($middlewares as $middleware)
             if ($middleware) {
                 return $middleware->handle();
-            } else
-                return true;
-        }
-
+            }
+        return true;
     }
+
     function param_arr($args, $reg_args)
     {
         $values = [];
@@ -87,7 +104,7 @@ class Router
 }
 
 $Router = new Router();
-function add_rout($path, $func, $middleware=null)
+function add_rout($path, $func, $middleware = null)
 {
     global $Router;
     $Router->add_rout($path, $func, $middleware);
@@ -96,3 +113,5 @@ function add_rout($path, $func, $middleware=null)
 
 require_once "config.php";
 require_once "$APP_NAME/routes.php";
+
+

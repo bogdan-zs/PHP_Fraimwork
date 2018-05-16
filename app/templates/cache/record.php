@@ -8,7 +8,11 @@
 </head>
 <body>
 
-<div class="header"><h1><a href="/PHP_Fraimwork/admin/">Admin control panel</a></h1></div>
+<div class="header row">
+    <h1 class="col-sm-6 col-md-9 col-lg-9" style="margin: 0"><a href="/PHP_Fraimwork/admin/"
+                                                                style="margin: 0 10px; line-height: 70px;">
+            Admin control panel</a>
+    </h1></div>
 
 <div class="container">
     <div class="row">
@@ -17,21 +21,21 @@
                 <?php  foreach($record as $name=>$field):?>
                 <div class="row">
                     <label class="col-md-3"><?=htmlentities($name)?>:</label>
-<!--                    <div class="col-md-3"><?=htmlentities($name)?></div>-->
+                    <!--                    <div class="col-md-3"><?=htmlentities($name)?></div>-->
                     <div class="col-md-9">
                         <?php  if($record_types[$field]=='"text"'):?>
                         <?="<textarea type='text' name='$name'
                                      rows='10' cols='40' class='form-control'>$field</textarea>"?>
                         <?php  else:?>
                         <?="<input type=$record_types[$field] value='$field' name='$name'
-                                 rows='10' cols='40' class='form-control'>"?>
+                                  rows='10' cols='40' class='form-control'>"?>
                         <?php  endif;?>
                     </div>
                 </div>
                 <hr>
                 <?php  endforeach;?>
                 <div class="col" style="padding: 0">
-                    <button type="submit" class="enter btn btn-primary btn-lg" >Save</button>
+                    <button type="submit" class="enter btn btn-primary btn-lg">Save</button>
                 </div>
             </form>
         </div>

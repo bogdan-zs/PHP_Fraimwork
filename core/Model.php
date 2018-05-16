@@ -5,7 +5,7 @@ include_once "Database/SQLBuilder.php";
 class Model
 {
     protected $tabel = null;
-    protected $id_name = "id";
+    public static $id_name = "id";
     private $isAutoinc;
     private $isNew;
     private $attributes = [];
@@ -38,8 +38,9 @@ class Model
 
     function __get($name)
     {
+
         if($name=="id")
-            $name = $this->id_name;
+            $name = get_class($this)::$id_name;
         return $this->attributes[$name] ?? null;
 
     }
@@ -69,26 +70,21 @@ class Model
 
     function save()
     {
-        if ($this->isAutoinc) {
-
-            $last_id = Database::connect()
-                ->prepare("select $this->id_name from $this->tabel order by $this->id_name desc limit 1");
-            $last_id->execute();
-            $last_id = $last_id->fetch(PDO::FETCH_ASSOC);
-            $last_id[$this->id_name] += 1;
-            $this->attributes += $last_id;
-        }
-
         if (!$this->isNew)
         {
-            $id_value = $this->attributes[$this->id_name];
-            return $this->builder->where("$this->id_name=$id_value")
+            $id_value = $this->attributes[self::$id_name];
+            return $this->builder->where(self::$id_name."=$id_value")
                                  ->update($this->attributes);
         }
         else {
             $this->isNew = false;
             return $this->builder->insert($this->attributes);
         }
+    }
+
+    function get_attributes()
+    {
+        return $this->attributes;
     }
 
 }
