@@ -1,4 +1,4 @@
-# PHP_Fraimwork
+# PHP_Framework
 
 ## Install
 add file ```config.php```
