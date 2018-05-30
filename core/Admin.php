@@ -49,7 +49,7 @@ class AdminMiddleware implements Middleware
             }
 
             if ($this->check($login, $password))
-                setcookie("sessionid", "123", time() + $TIME_LIFE_COOKIE, "/");
+                setcookie("sessionid", "123", null, "/");
             header("Location: " . $_SERVER["REQUEST_URI"], true, 302);
             exit();
 
@@ -80,27 +80,30 @@ class Admin
     static function show($table)
     {
         global $ADMIN_CLASSES;
-        if(in_array($table, $ADMIN_CLASSES)) {
+        if(in_array($table, array_keys($ADMIN_CLASSES))) {
             $records = $table::all();
-            $keys = SQLBuilder::get_columns_name(strtolower($table));
+            $fields = $ADMIN_CLASSES[$table]["fields"];
             return render("table", [
                 "records" => $records,
-                "table" => $table,
-                "keys" => $keys]);
+                "table" => $ADMIN_CLASSES[$table]["capture"],
+                "fields" => $fields]);
         }
     }
 
     static function edit($table, $id)
     {
         global $ADMIN_CLASSES;
-        if(in_array($table, $ADMIN_CLASSES)) {
+        if(in_array($table, array_keys($ADMIN_CLASSES))) {
             if ($_SERVER["REQUEST_METHOD"] == "POST")
                 self::save_edit($table, $id);
 
             $record = $table::where($table::$id_name . "=$id")->get()[0]->get_attributes();
-            $input_types = self::input_types($table);
-            $record_types = array_combine($record, $input_types);
-            return render("record", ["record_types" => $record_types, "record" => $record, "table" => $table]);
+            return render("record",
+                [
+                    "fields" => $ADMIN_CLASSES[$table]["fields"],
+                    "record" => $record,
+                    "table" => $ADMIN_CLASSES[$table]["capture"]
+                ]);
         }
     }
 
@@ -125,13 +128,14 @@ class Admin
     static function add($table)
     {
         global $ADMIN_CLASSES;
-        if(in_array($table, $ADMIN_CLASSES)) {
+        if(in_array($table, array_keys($ADMIN_CLASSES))) {
             if ($_SERVER["REQUEST_METHOD"] == "POST")
                 self::save_add($table);
-            $input_types = self::input_types($table);
-            $labels = SQLBuilder::get_columns_name(strtolower($table));
-            $labels_types = array_combine($labels, $input_types);
-            return render("add", ["labels_types" => $labels_types, "table" => $table]);
+            return render("add",
+                [
+                    "fields" => $ADMIN_CLASSES[$table]["fields"],
+                    "table" => $ADMIN_CLASSES[$table]["capture"]
+                ]);
         }
 
     }
@@ -140,7 +144,7 @@ class Admin
     {
         if (!$_POST[$table::$id_name])
             unset($_POST[$table::$id_name]);
-        var_dump($_POST);
+        //var_dump($_POST);
         $table::insert($_POST);
         header("Location: ..", true, 301);
         exit();
@@ -149,7 +153,7 @@ class Admin
     static public function delete($table, $id)
     {
         global $ADMIN_CLASSES;
-        if(in_array($table, $ADMIN_CLASSES)) {
+        if(in_array($table, array_keys($ADMIN_CLASSES))) {
             $table::where($table::$id_name . "=$id")->delete();
             header("Location: ../..", true, 301);
             exit();

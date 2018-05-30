@@ -18,16 +18,16 @@
     <div class="row">
         <div class="main col edit">
             <form action="" method="POST">
-                {%foreach($record as $name=>$field):%}
+                {%foreach($fields as $field=>$info):%}
                 <div class="row">
-                    <label class="col-md-3">{{$name}}:</label>
+                    <label class="col-md-3">{{$info["name"]}}:</label>
                     <!--                    <div class="col-md-3">{{$name}}</div>-->
                     <div class="col-md-9">
-                        {%if($record_types[$field]=='"text"'):%}
-                        {!"<textarea type='text' name='$name'
-                                     rows='10' cols='40' class='form-control'>$field</textarea>"!}
+                        {%if($info["type"]=="text"):%}
+                        {!"<textarea type='text' name='$field'
+                                     rows='10' cols='40' class='form-control'>$record[$field]</textarea>"!}
                         {%else:%}
-                        {!"<input type=$record_types[$field] value='$field' name='$name'
+                        {!"<input type='{$info["type"]}' value='$record[$field]' name='$field'
                                   rows='10' cols='40' class='form-control'>"!}
                         {%endif%}
                     </div>

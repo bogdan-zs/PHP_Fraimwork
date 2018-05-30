@@ -20,8 +20,8 @@
 
                 <thead>
                 <tr>
-                    {% foreach($keys as $key): %}
-                    <th scope="col">{{$key}}</th>
+                    {% foreach($fields as $field): %}
+                    <th scope="col">{{$field["name"]}}</th>
                     {%endforeach%}
                     <th scope="col"></th>
                 </tr>
@@ -29,9 +29,9 @@
                 <tbody>
                 {% foreach($records as $record):%}
                 <tr>
-                    {% foreach($record->get_attributes() as $name=>$field):%}
+                    {% foreach($fields as $field=>$info):%}
                     <td onclick="window.location.href='{!$record->id!}/'; return false">
-                        <h5>{{$field}}</h5>
+                        <h5>{{$record->get_attributes()[$field]}}</h5>
                     </td>
 
                     {%endforeach%}

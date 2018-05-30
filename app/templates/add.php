@@ -14,16 +14,16 @@
     <div class="row">
         <div class="main col edit">
             <form action="" method="POST">
-                {%foreach($labels_types as $label=>$type):%}
+                {%foreach($fields as $field=>$info):%}
                 <div class="row">
-                    <label class="col-md-3">{{$label}}:</label>
+                    <label class="col-md-3">{{$info["name"]}}:</label>
 <!--                    <div class="col-md-3">{{$name}}</div>-->
                     <div class="col-md-9">
-                        {%if($type=='"text"'):%}
-                        {!"<textarea type='text' name='$label'
+                        {%if($info["type"]=="text"):%}
+                        {!"<textarea type='text' name='$field'
                                      rows='10' cols='40' class='form-control'></textarea>"!}
                         {%else:%}
-                        {!"<input type=$type  name='$label'
+                        {!"<input type='{$info["type"]}'  name='$field'
                                  rows='10' cols='40' class='form-control'>"!}
                         {%endif%}
                     </div>

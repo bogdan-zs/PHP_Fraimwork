@@ -10,13 +10,11 @@
 function render($template, $context = [])
 {
     require "config.php";
-    $exp_of_script = 0;
     $template = $template . ".php";
     $files = scandir($CACHES_PATH);
 
     if (!in_array("$template", $files) ||
         fileatime($TEMPLATES_NAME . $template) > fileatime($CACHES_PATH . $template)) {
-        echo "parse";
         parser($template);
     }
 
@@ -30,7 +28,6 @@ function render($template, $context = [])
 
 function parser($template)
 {
-    echo "parser";
     require "config.php";
     $file_path = "$APP_NAME/templates/$template";
 
@@ -76,7 +73,4 @@ function csrf($text)
 //    echo $text;
 //    return $text;
 //}
-<<<<<<< HEAD
 
-=======
->>>>>>> 510f7776bb493e6bce53db3987f7138789a789cf

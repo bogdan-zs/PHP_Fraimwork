@@ -20,8 +20,8 @@
 
                 <thead>
                 <tr>
-                    <?php   foreach($keys as $key): ;?>
-                    <th scope="col"><?=htmlentities($key)?></th>
+                    <?php   foreach($fields as $field): ;?>
+                    <th scope="col"><?=htmlentities($field["name"])?></th>
                     <?php  endforeach;?>
                     <th scope="col"></th>
                 </tr>
@@ -29,9 +29,9 @@
                 <tbody>
                 <?php   foreach($records as $record):?>
                 <tr>
-                    <?php   foreach($record->get_attributes() as $name=>$field):?>
+                    <?php   foreach($fields as $field=>$info):?>
                     <td onclick="window.location.href='<?=$record->id?>/'; return false">
-                        <h5><?=htmlentities($field)?></h5>
+                        <h5><?=htmlentities($record->get_attributes()[$field])?></h5>
                     </td>
 
                     <?php  endforeach;?>

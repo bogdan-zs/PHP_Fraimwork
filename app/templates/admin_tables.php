@@ -9,7 +9,7 @@
 <body>
 
 <div class="header row">
-    <h1 class="col-sm-6 col-md-9 col-lg-9" style="margin: 0"><a href="/PHP_Fraimwork/admin/" style="margin: 0 10px; line-height: 70px;">7777Admin control panel</a></h1>
+    <h1 class="col-sm-6 col-md-9 col-lg-9" style="margin: 0"><a href="/PHP_Fraimwork/admin/" style="margin: 0 10px; line-height: 70px;">Admin control panel</a></h1>
     <div class="col-sm-6 col-md-3 col-lg-3" style="display: inline-block; text-align: center;">
         <a href="?q=exit"><button class="exit btn btn-secondary" style="margin: 30px 0; padding: 5px 20px;
     background-color: #75ADC8;">
@@ -32,9 +32,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% foreach($tables as $table):%}
+                {% foreach($tables as $table=>$info):%}
                 <tr>
-                    <td onclick="window.location.href='{{$table}}/'; return false"><h3>{{$table}}</h3></td>
+                    <td onclick="window.location.href='{{$table}}/'; return false"><h3>{{$info["capture"]}}</h3></td>
                     <td class="commands">
                         <a href="{{$table}}/add/">
                             <button type="button" class="btn btn-success">Add</button>
