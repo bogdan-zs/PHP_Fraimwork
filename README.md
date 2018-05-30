@@ -67,17 +67,7 @@ $ADMIN_CLASSES = [
     ]
 ];
 
-$TYPES_INPUT =
-    [
-        "int(11)" => "number",
-        "double" => '"number" step="0.01"',
-        "decimal(16,2)" => '"number" step="0.01"',
-        "decimal(18,2)" => '"number" step="0.01"',
-        "float" => '"number" step="0.01"',
-        "datetime" => '"datetime"',
-        "varchar(255)" => '"text"',
-        "varchar(45)" => '"text" maxlength="45"'
-    ];
+
 
 
 ```
